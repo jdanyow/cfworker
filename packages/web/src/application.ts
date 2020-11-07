@@ -33,11 +33,13 @@ export class Application {
       await middleware(context, () => resolved);
       return context.res.create();
     } catch (err) {
-      console.error(err.stack || err.toString());
-
       if (err instanceof HttpError) {
         return err.toResponse();
       }
+
+      console.error(
+        err?.stack || err?.toString() || 'Error invoking middleware'
+      );
 
       const status = 500;
       const statusText = statuses[500]!;
